@@ -1,0 +1,35 @@
+services:
+  backend:
+    build: .
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      CHROMA_PERSIST_DIR: /app/state/chroma_db
+      SESSION_DUMP_PATH: /app/state/sessions.json
+    volumes:
+      - meraki_state:/app/state
+      - ./data/pdfs:/app/data/pdfs:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8000/health').status==200 else 1)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+
+  frontend:
+    build: .
+    command: ["streamlit", "run", "frontend/streamlit_app.py", "--server.port=8501", "--server.address=0.0.0.0"]
+    ports:
+      - "8501:8501"
+    environment:
+      MERAKI_API_BASE: http://backend:8000
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  meraki_state:

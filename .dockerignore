@@ -1,0 +1,13 @@
+.venv
+__pycache__
+*.pyc
+.git
+.pytest_cache
+chroma_db/
+sessions.json
+data/pdfs/
+.env
+docs/
+eval/results/
+tests/
+.plan.md.swp

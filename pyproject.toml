@@ -1,0 +1,41 @@
+[project]
+name = "meraki-10k-agent"
+version = "0.1.0"
+description = "Conversational agent for Q&A over Indian listed-company FY25 annual reports"
+requires-python = ">=3.11,<3.13"
+dependencies = [
+  "fastapi>=0.115.0",
+  "uvicorn[standard]>=0.32.0",
+  "python-multipart>=0.0.12",
+  "pydantic>=2.9.0",
+  "pydantic-settings>=2.6.0",
+  "pydantic-ai[google]>=1.94.0",
+  "google-genai>=0.3.0",
+  "chromadb>=0.5.20",
+  "pypdf>=5.1.0",
+  "pdfplumber>=0.11.4",
+  "tiktoken>=0.8.0",
+  "asteval>=1.0.5",
+  "tavily-python>=0.5.0",
+  "structlog>=24.4.0",
+  "streamlit>=1.40.0",
+  "httpx>=0.27.0",
+  "rich>=13.9.0",
+]
+
+[dependency-groups]
+dev = [
+  "asgi-lifespan>=2.1.0",
+  "pytest>=8.3.0",
+  "pytest-asyncio>=0.24.0",
+  "pytest-mock>=3.14.0",
+  "reportlab>=4.2.0", # to generate synthetic test PDFs
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+addopts = "-ra"
+
+[tool.uv]
+package = false
